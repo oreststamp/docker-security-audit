@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SecuBox - Container Scanner</title>
+    <style>
+        body { font-family: monospace; background: #0d1117; color: #c9d1d9; padding: 2rem; }
+        h1 { color: #58a6ff; }
+        input { background: #161b22; color: #c9d1d9; border: 1px solid #30363d;
+                padding: 8px; width: 300px; border-radius: 4px; }
+        button { background: #238636; color: white; border: none;
+                 padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+        th, td { border: 1px solid #30363d; padding: 8px; text-align: left; }
+        th { background: #161b22; }
+        .CRITICAL { color: #ff7b72; font-weight: bold; }
+        .HIGH { color: #f0883e; }
+        .none { color: #3fb950; }
+    </style>
+</head>
+<body>
+    <h1>🔒 SecuBox — CVE Scanner</h1>
+    <form method="POST">
+        <input name="image_name" placeholder="e.g. nginx:1.21" value="{{ image_name }}">
+        <button type="submit">Scan</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">Error: {{ error }}</p>
+    {% endif %}
+
+    {% if results is not none %}
+        {% if results %}
+            <p>Found <strong>{{ results|length }}</strong> HIGH/CRITICAL vulnerabilities in <em>{{ image_name }}</em></p>
+            <table>
+                <tr><th>CVE ID</th><th>Package</th><th>Severity</th><th>Installed</th><th>Fixed In</th></tr>
+                {% for v in results %}
+                <tr>
+                    <td><a href="https://nvd.nist.gov/vuln/detail/{{ v.id }}"
+                           style="color:#58a6ff" target="_blank">{{ v.id }}</a></td>
+                    <td>{{ v.pkg }}</td>
+                    <td class="{{ v.severity }}">{{ v.severity }}</td>
+                    <td>{{ v.installed }}</td>
+                    <td>{{ v.fixed }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p class="none">✅ No HIGH or CRITICAL vulnerabilities found in {{ image_name }}</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

@@ -12,14 +12,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Pull nginx:1.21
-        run: docker pull nginx:1.21
+      - name: Build secubox image
+        run: docker build -t secubox:latest .
 
-      - name: Pull nginx:latest
-        run: docker pull nginx:latest
+      - name: Scan for CRITICAL vulnerabilities
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image \
+            --severity CRITICAL \
+            --exit-code 1 \
+            --quiet \
+            secubox:latest
 
-      - name: Run audit on nginx:1.21
+      - name: Pull nginx images for comparison
+        run: |
+          docker pull nginx:1.21
+          docker pull nginx:latest
+
+      - name: Audit nginx:1.21
         run: bash audit.sh nginx:1.21
 
-      - name: Run audit on nginx:latest
+      - name: Audit nginx:latest
         run: bash audit.sh nginx:latest
