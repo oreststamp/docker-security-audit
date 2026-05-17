@@ -1,0 +1,14 @@
+# CVE-2026-33845 - libgnutls - No fix available from Debian yet
+# Status: affected, Fixed Version: none
+# Accepted risk: monitoring for upstream patch
+CVE-2026-33845
+
+# CVE-2026-42010 - libgnutls - No fix available from Debian yet
+# Status: affected, Fixed Version: none  
+# Accepted risk: monitoring for upstream patch
+CVE-2026-42010
+
+# CVE-2026-7598 - libssh2 - No fix available from Debian yet
+# Status: affected, Fixed Version: none
+# Accepted risk: monitoring for upstream patch
+CVE-2026-7598
