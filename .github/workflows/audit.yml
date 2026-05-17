@@ -1,0 +1,22 @@
+name: Docker Security Audit
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pull nginx test image
+        run: docker pull nginx:1.21
+
+      - name: Run security audit
+        run: bash audit.sh nginx:1.21
+
+      - name: Run audit on latest nginx
+        run: bash audit.sh nginx:latest
