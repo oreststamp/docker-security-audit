@@ -12,11 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Pull nginx test image
+      - name: Pull nginx:1.21
         run: docker pull nginx:1.21
 
-      - name: Run security audit
+      - name: Pull nginx:latest
+        run: docker pull nginx:latest
+
+      - name: Run audit on nginx:1.21
         run: bash audit.sh nginx:1.21
 
-      - name: Run audit on latest nginx
+      - name: Run audit on nginx:latest
         run: bash audit.sh nginx:latest
